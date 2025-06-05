@@ -7,4 +7,21 @@ class ServiceHttpClient {
   final String baseUrl = 'http://10.0.0.2:8000/api/';
   final secureStorage = FlutterSecureStorage();
 
+  //post
+  Future<http.Response> post(String endPoint, Map<String, dynamic> body) async {
+    final url = Uri.parse("$baseUrl$endPoint");
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+        );
+      return response;
+    } catch (e) {
+      throw Exception("POST request failed: $e");
+    }
+  }
 }

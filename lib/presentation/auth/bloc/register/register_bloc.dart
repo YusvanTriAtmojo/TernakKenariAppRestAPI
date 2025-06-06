@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:kenari_app/data/model/request/auth/register_request_model.dart';
 import 'package:kenari_app/data/repository/auth_repository.dart';
-import 'package:meta/meta.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';

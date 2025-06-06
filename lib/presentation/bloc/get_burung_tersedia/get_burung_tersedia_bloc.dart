@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:kenari_app/data/model/response/burung_semua_tersedia_model.dart';
 import 'package:kenari_app/data/repository/get_all_burung_tersedia_repository.dart';
-import 'package:meta/meta.dart';
 
 part 'get_burung_tersedia_event.dart';
 part 'get_burung_tersedia_state.dart';

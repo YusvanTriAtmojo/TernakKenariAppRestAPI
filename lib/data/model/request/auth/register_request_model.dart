@@ -17,7 +17,7 @@ class RegisterRequestModel {
 
     factory RegisterRequestModel.fromJson(String str) => RegisterRequestModel.fromMap(json.decode(str));
 
-    String toJson() => json.encode(toMap());
+    Map<String, dynamic> toJson() => toMap();
 
     factory RegisterRequestModel.fromMap(Map<String, dynamic> json) => RegisterRequestModel(
         username: json["username"],

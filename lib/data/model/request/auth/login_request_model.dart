@@ -11,7 +11,7 @@ class LoginRequestModel {
 
     factory LoginRequestModel.fromJson(String str) => LoginRequestModel.fromMap(json.decode(str));
 
-    String toJson() => json.encode(toMap());
+    Map<String, dynamic> toJson() => toMap();
 
     factory LoginRequestModel.fromMap(Map<String, dynamic> json) => LoginRequestModel(
         email: json["email"],

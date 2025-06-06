@@ -1,8 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kenari_app/core/components/components.dart';
 import 'package:kenari_app/core/components/spaces.dart';
 import 'package:kenari_app/core/constants/colors.dart';
 import 'package:kenari_app/core/core.dart';
+import 'package:kenari_app/data/model/request/auth/register_request_model.dart';
+import 'package:kenari_app/presentation/auth/bloc/register/register_bloc.dart';
+import 'package:kenari_app/presentation/auth/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -104,6 +109,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ],
+                ),
+                const SpaceHeight(50),
+                BlocConsumer<RegisterBloc, RegisterState>(
+                  listener: (context, state) {
+                    if (state is RegisterSuccess) {
+                      context.pushAndRemoveUntil(
+                        const LoginScreen(),
+                        (route) => false,
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: AppColors.primary,
+                        ),
+                      );
+                    } else if (state is RegisterFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.error),
+                          backgroundColor: AppColors.red,
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return Button.filled(
+                      onPressed: state is RegisterLoading
+                          ? null
+                          : () {
+                              if (_key.currentState!.validate()) {
+                                final request = RegisterRequestModel(
+                                  username: namaController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
+                                context.read<RegisterBloc>().add(
+                                  RegisterRequested(requestModel: request),
+                                );
+                              }
+                            },
+                      label: state is RegisterLoading ? 'Memuat...' : 'Daftar',
+                    );
+                  },
                 ),
               ],
             ),

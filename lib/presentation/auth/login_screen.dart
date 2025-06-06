@@ -1,8 +1,14 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kenari_app/core/components/components.dart';
 import 'package:kenari_app/core/components/spaces.dart';
 import 'package:kenari_app/core/constants/colors.dart';
 import 'package:kenari_app/core/core.dart';
+import 'package:kenari_app/data/model/request/auth/login_request_model.dart';
+import 'package:kenari_app/presentation/auth/bloc/login/login_bloc.dart';
+import 'package:kenari_app/presentation/auth/register_screen.dart';
+import 'package:kenari_app/presentation/buyer/profile/buyer_profile_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -83,6 +89,55 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: AppColors.grey,
                     ),
                   ),
+                ),
+                const SpaceHeight(30),
+                BlocConsumer<LoginBloc, LoginState>(
+                  listener: (context, state) {
+                    if (state is LoginFailure) {
+                      ScaffoldMessenger.of(
+                        context,
+                        ).showSnackBar(SnackBar(content: Text(state.error)));
+                    } else if (state is LoginSuccess) {
+                      final role = state.responseModel.user?.role
+                      ?.toLowerCase();
+                      if (role == 'admin') {
+                        context.pushAndRemoveUntil(
+                          const AdminConfirmScreen(),
+                          (route) => false,
+                        );
+                      } else if (role == 'buyer') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(state.responseModel.message!)),
+                        );
+                        context.pushAndRemoveUntil(
+                          const BuyerProfileScreen(),
+                          (route) => false,
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Role tidak dikenali')),
+                        );
+                      }
+                    }
+                  },
+                  builder: (context, state) {
+                    return Button.filled(
+                      onPressed: state is LoginLoading
+                          ? null
+                          : () {
+                              if (_key.currentState!.validate()) {
+                                final request = LoginRequestModel(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
+                                context.read<LoginBloc>().add(
+                                  LoginRequested(requestModel: request),
+                                );
+                              }
+                            },
+                      label: state is LoginLoading ? 'Memuat...' : 'Masuk',
+                    );
+                  },
                 ),
               ],
             ),

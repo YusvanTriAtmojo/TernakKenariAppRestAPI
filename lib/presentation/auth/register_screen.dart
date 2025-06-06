@@ -153,6 +153,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     );
                   },
                 ),
+                const SpaceHeight(20),
+                Text.rich(
+                  TextSpan(
+                    text: 'Sudah memiliki akun? Silahkan ',
+                    style: TextStyle(
+                      color: AppColors.grey,
+                      fontSize: MediaQuery.of(context).size.width * 0.03,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Login disini!',
+                        style: TextStyle(color: AppColors.primary),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            context.pushAndRemoveUntil(
+                              const LoginScreen(),
+                              (route) => false,
+                            );
+                          },
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

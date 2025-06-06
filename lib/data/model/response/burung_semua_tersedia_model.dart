@@ -1,5 +1,45 @@
 import 'dart:convert';
 
+class BurungSemuaTersediabyIdModel {
+  final String message;
+  final int statusCode;
+  final DataBurungTersedia data;
+
+  BurungSemuaTersediabyIdModel({
+    required this.message,
+    required this.statusCode,
+    required this.data,
+  });
+
+  BurungSemuaTersediabyIdModel copyWith({
+    String? message,
+    int? statusCode,
+    DataBurungTersedia? data,
+  }) => BurungSemuaTersediabyIdModel(
+    message: message ?? this.message,
+    statusCode: statusCode ?? this.statusCode,
+    data: data ?? this.data,
+  );
+
+  factory BurungSemuaTersediabyIdModel.fromRawJson(String str) =>
+      BurungSemuaTersediabyIdModel.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory BurungSemuaTersediabyIdModel.fromJson(Map<String, dynamic> json) =>
+      BurungSemuaTersediabyIdModel(
+        message: json["message"],
+        statusCode: json["status_code"],
+        data: DataBurungTersedia.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+    "message": message,
+    "status_code": statusCode,
+    "data": data.toJson(),
+  };
+}
+
 class DataBurungTersedia {
   final int id;
   final String image;

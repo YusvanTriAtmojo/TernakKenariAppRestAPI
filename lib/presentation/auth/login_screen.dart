@@ -139,6 +139,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                 ),
+                const SpaceHeight(20),
+                Text.rich(
+                  TextSpan(
+                    text: 'Belum memiliki akun? Silahkan ',
+                    style: TextStyle(
+                      color: AppColors.grey,
+                      fontSize: MediaQuery.of(context).size.width * 0.03,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'daftar disini!',
+                        style: TextStyle(color: AppColors.primary),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            context.push(const RegisterScreen());
+                          },
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
